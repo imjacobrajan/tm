@@ -37,7 +37,7 @@ function App() {
   // Initialize with NetBox data converted to internal format
   const netboxScan = adaptSlurpitTopology(netboxTopologyData, scanMetadata.scan_name);
   
-  const [currentView, setCurrentView] = useState('nav-topology'); // Start with topology view
+  const [currentView, setCurrentView] = useState('nav-dashboard'); // Start with dashboard
   const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
   const [, setSelectedSite] = useState<Site | null>(null);
   const [showDiscoveryWizard, setShowDiscoveryWizard] = useState(false);
