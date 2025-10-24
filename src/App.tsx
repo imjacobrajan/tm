@@ -17,6 +17,7 @@ import WirelessNetworkMonitor from './components/Monitoring/WirelessNetworkMonit
 import ApplicationPerformanceMonitor from './components/Monitoring/ApplicationPerformanceMonitor';
 import CloudResourcesMonitor from './components/Monitoring/CloudResourcesMonitor';
 import LogManagement from './components/Monitoring/LogManagement';
+import GrafanaDashboard from './components/Monitoring/GrafanaDashboard';
 import ConfigurationManager from './components/Settings/ConfigurationManager';
 import CredentialsManager from './components/Settings/CredentialsManager';
 import BackupManagement from './components/Management/BackupManagement';
@@ -141,6 +142,8 @@ function App() {
         return <CloudResourcesMonitor onClose={() => setCurrentView('nav-dashboard')} />;
       case 'nav-monitoring-logs':
         return <LogManagement onClose={() => setCurrentView('nav-dashboard')} />;
+      case 'nav-monitoring-grafana':
+        return <GrafanaDashboard onClose={() => setCurrentView('nav-dashboard')} />;
       
       // Management Views
       case 'nav-config-management':
@@ -243,6 +246,7 @@ function App() {
       case 'nav-monitoring-applications': return 'Application Performance';
       case 'nav-monitoring-cloud': return 'Cloud Resources';
       case 'nav-monitoring-logs': return 'Log Management';
+      case 'nav-monitoring-grafana': return 'Grafana Dashboard';
       case 'nav-config-management': return 'Configuration Management';
       case 'nav-backups-management': return 'Backup Management';
       case 'nav-firmware-management': return 'Firmware Management';
@@ -278,6 +282,7 @@ function App() {
       case 'nav-monitoring-applications': return 'Monitor application performance and availability';
       case 'nav-monitoring-cloud': return 'Monitor cloud resources and costs';
       case 'nav-monitoring-logs': return 'Manage and analyze system logs';
+      case 'nav-monitoring-grafana': return 'View and interact with Grafana monitoring dashboards';
       case 'nav-config-management': return 'Manage device configurations and compliance';
       case 'nav-backups-management': return 'Manage configuration and system backups';
       case 'nav-firmware-management': return 'Manage firmware versions and updates';

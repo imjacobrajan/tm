@@ -904,6 +904,12 @@ export const mockNavigationItems: NavigationItem[] = [
         label: 'Log Management',
         icon: 'file-text',
         path: '/monitoring/logs'
+      },
+      {
+        id: 'nav-monitoring-grafana',
+        label: 'Grafana Dashboard',
+        icon: 'bar-chart',
+        path: '/monitoring/grafana'
       }
     ]
   },
