@@ -1,225 +1,304 @@
-# Topology Manager
+# Netpulse Topology Manager
 
-A comprehensive network topology management application built with React, Vite, and Tailwind CSS v4. This application provides a complete solution for network discovery, device management, path analysis, and geotagging.
+A comprehensive network topology and monitoring application with Grafana integration.
 
-## Features
+## 🚀 Quick Start
 
-### 🏠 Dashboard
-- Network overview with device statistics
-- Real-time status monitoring
-- Quick action buttons
-- Recent events and activity feed
+### Start Grafana and Prometheus
 
-### 🔍 Network Discovery
-- Multi-step discovery wizard
-- Support for various seed device types (IP, range, subnet, cloud, virtual)
-- Multi-hop expansion with configurable limits
-- Credential management and priority ordering
-- Auto-monitoring setup
+#### Option 1: Using the Quick Start Script (Recommended)
 
-### 🖥️ Device Management
-- Comprehensive device list with filtering and sorting
-- Detailed device information panels
-- Interface management
-- Monitor configuration
-- Event and metrics tracking
-
-### 🗺️ Network Visualization
-- Interactive topology maps
-- Geographic mapping with device overlays
-- Geotagging manager for devices and sites
-- Multiple map types (roadmap, satellite, hybrid, terrain)
-
-### 🛣️ Path & Reachability Analysis
-- Network path analysis between devices
-- Reachability testing with continuous monitoring
-- Path visualization with hop-by-hop details
-- Failure point identification
-
-### 🔗 LLDP/Link Ingestion
-- Automatic link discovery using LLDP/CDP
-- SNMP-based topology building
-- Link confidence scoring
-- Real-time link status monitoring
-
-### ⚙️ Settings & Configuration
-- Credential management (SNMP, SSH, WMI, Cloud APIs)
-- Device role configuration
-- Dependency management for alert suppression
-- Schedule management for automated tasks
-
-## Technology Stack
-
-- **Frontend**: React 18 with TypeScript
-- **Build Tool**: Vite
-- **Styling**: Tailwind CSS v4
-- **State Management**: React Hooks
-- **Icons**: Unicode emojis for cross-platform compatibility
-
-## Project Structure
-
-```
-src/
-├── components/
-│   ├── Analysis/           # Path and reachability analysis
-│   ├── Dashboard/          # Main dashboard components
-│   ├── Devices/            # Device management
-│   ├── Discovery/          # Network discovery wizard
-│   ├── Layout/             # Layout components (sidebar, header)
-│   ├── Maps/               # Geographic mapping and geotagging
-│   ├── Network/            # LLDP ingestion and link management
-│   └── Settings/           # Configuration panels
-├── data/
-│   └── mockData.ts         # Comprehensive mock data
-├── types/
-│   └── index.ts            # TypeScript type definitions
-└── App.tsx                 # Main application component
-```
-
-## Getting Started
-
-### Prerequisites
-- Node.js 18+ 
-- npm or yarn
-
-### Installation
-
-1. Clone the repository:
 ```bash
-git clone <repository-url>
+./start-grafana.sh
+```
+
+#### Option 2: Using Docker Compose Manually
+
+```bash
+# Start services
+docker-compose -f docker-compose.grafana.yml up -d
+
+# Check status
+docker ps
+
+# View logs
+docker-compose -f docker-compose.grafana.yml logs -f
+```
+
+### Access the Services
+
+Once started, you can access:
+
+- **Grafana**: http://localhost:3000
+  - Username: `admin`
+  - Password: `admin` (you'll be prompted to change it)
+
+- **Prometheus**: http://localhost:9090
+
+## 📋 Prerequisites
+
+### 1. Docker Desktop
+
+Make sure Docker Desktop is installed and running:
+
+- **Download**: https://www.docker.com/products/docker-desktop
+- **Verify**: `docker --version`
+- **Start**: Open Docker Desktop application
+
+### 2. Node.js (for the main application)
+
+- Node.js 16+ required
+- Install from: https://nodejs.org/
+
+## 🏗️ Project Structure
+
+```
+topology/
+├── topology-manager/              # Main React application
+│   ├── src/
+│   │   ├── components/
+│   │   │   └── Monitoring/
+│   │   │       └── GrafanaDashboard.tsx  # Grafana integration component
+│   │   └── ...
+│   └── ...
+├── grafana/                       # Grafana configuration
+│   ├── provisioning/
+│   │   ├── datasources/          # Auto-configured datasources
+│   │   └── dashboards/           # Dashboard provisioning
+│   └── dashboards/               # Pre-built dashboards
+│       └── network-overview.json
+├── prometheus/                    # Prometheus configuration
+│   └── prometheus.yml
+├── docker-compose.grafana.yml    # Docker Compose for Grafana/Prometheus
+├── start-grafana.sh              # Quick start script
+├── GRAFANA_SETUP.md              # Detailed Grafana setup guide
+└── README.md                      # This file
+```
+
+## 🔧 Setup Instructions
+
+### Step 1: Start Docker Desktop
+
+1. Open Docker Desktop application
+2. Wait for it to fully start (icon in menu bar should be stable)
+3. Verify: `docker ps` should work without errors
+
+### Step 2: Start Grafana and Prometheus
+
+```bash
+./start-grafana.sh
+```
+
+Or manually:
+
+```bash
+docker-compose -f docker-compose.grafana.yml up -d
+```
+
+### Step 3: Start the Main Application
+
+```bash
 cd topology-manager
-```
-
-2. Install dependencies:
-```bash
 npm install
-```
-
-3. Start the development server:
-```bash
 npm run dev
 ```
 
-4. Open your browser and navigate to `http://localhost:5173`
+### Step 4: Configure Grafana in the Application
 
-### Building for Production
+1. Open the application (usually http://localhost:5173)
+2. Navigate to **Monitoring** → **Grafana Dashboard**
+3. Click **Configure**
+4. Enter:
+   - **Grafana Base URL**: `http://localhost:3000`
+   - **Dashboard Path**: `/d/network-topology/network-topology-overview`
+5. Click **Save Configuration**
+6. Toggle **Embed Mode** to view Grafana within the app
 
+## 📖 Documentation
+
+- **[GRAFANA_SETUP.md](GRAFANA_SETUP.md)** - Complete Grafana setup and configuration guide
+- **[topology-manager/GRAFANA_INTEGRATION.md](topology-manager/GRAFANA_INTEGRATION.md)** - Application integration details
+
+## 🐳 Docker Commands
+
+### Start Services
 ```bash
-npm run build
+docker-compose -f docker-compose.grafana.yml up -d
 ```
 
-The built files will be in the `dist` directory.
+### Stop Services
+```bash
+docker-compose -f docker-compose.grafana.yml down
+```
 
-## Usage
+### View Logs
+```bash
+# All services
+docker-compose -f docker-compose.grafana.yml logs -f
 
-### Network Discovery Flow
+# Grafana only
+docker-compose -f docker-compose.grafana.yml logs -f grafana
 
-1. **Start Discovery**: Click the discovery button or navigate to Discover → New Scan
-2. **Configure Scan**: 
-   - Enter scan name and description
-   - Add seed devices (IP addresses, ranges, subnets)
-   - Configure expansion settings (max hops, device limits)
-   - Select credentials for authentication
-   - Set advanced options (timeout, retries, auto-monitoring)
-3. **Review & Run**: Review configuration and start the scan
-4. **Monitor Progress**: Watch real-time progress and results
+# Prometheus only
+docker-compose -f docker-compose.grafana.yml logs -f prometheus
+```
 
-### Device Management
+### Restart Services
+```bash
+docker-compose -f docker-compose.grafana.yml restart
+```
 
-1. **View Devices**: Navigate to My Network → Devices
-2. **Filter & Search**: Use filters to find specific devices
-3. **Device Details**: Click on any device to view detailed information
-4. **Manage Interfaces**: View and configure device interfaces
-5. **Monitor Status**: Track device health and performance
+### Remove All Data (Fresh Start)
+```bash
+docker-compose -f docker-compose.grafana.yml down -v
+```
 
-### Path Analysis
+### Check Running Containers
+```bash
+docker ps
+```
 
-1. **Select Source & Target**: Choose devices for path analysis
-2. **Configure Options**: Set analysis preferences (L2/L3, max hops)
-3. **Run Analysis**: Execute path discovery
-4. **Review Results**: View detailed path information and failure points
+Expected output should show:
+- `netpulse-grafana` on port 3000
+- `netpulse-prometheus` on port 9090
 
-### Geotagging
+## 🎯 Features
 
-1. **Open Geotagging Manager**: Navigate to Maps → Manage Locations
-2. **Select Device/Site**: Choose item to geotag
-3. **Enter Location**: Add address or coordinates
-4. **Geocode**: Use geocoding to get precise coordinates
-5. **Save**: Store location information
+### Grafana Integration
 
-## Data Models
+- ✅ **Embed Mode**: View Grafana dashboards within the application
+- ✅ **External Mode**: Open Grafana in a new tab
+- ✅ **Auto-Configuration**: Pre-configured Prometheus datasource
+- ✅ **Sample Dashboard**: Network topology overview dashboard included
+- ✅ **Persistent Settings**: Configuration saved to browser localStorage
+- ✅ **Responsive Design**: Works on desktop and mobile
 
-### Core Entities
+### Application Features
 
-- **Device**: Network devices with interfaces, credentials, and monitoring
-- **Site**: Physical locations with geographic coordinates
-- **Link**: Network connections between devices
-- **Interface**: Device network interfaces with LLDP information
-- **Credential**: Authentication credentials for various protocols
-- **Monitor**: Health checks and performance monitoring
-- **Event**: System events and alerts
-- **Metric**: Performance and status metrics
+- Network topology visualization
+- Device management and monitoring
+- Path analysis and reachability testing
+- Real-time performance monitoring
+- Traffic analysis
+- Configuration management
+- And much more...
 
-### Discovery & Analysis
+## 🔍 Troubleshooting
 
-- **DiscoveryScan**: Network discovery configuration and results
-- **PathQuery**: Network path analysis requests
-- **ReachabilityQuery**: Reachability testing configuration
-- **LLDPInfo**: Link Layer Discovery Protocol information
+### Docker Daemon Not Running
 
-## Mock Data
+**Error**: `Cannot connect to the Docker daemon`
 
-The application includes comprehensive mock data for demonstration:
+**Solution**:
+1. Open Docker Desktop application
+2. Wait for it to fully start (green indicator)
+3. Try the command again
 
-- 5 sample devices (Cisco, Dell, Fortinet)
-- 3 geographic sites (San Francisco, NYC)
-- Network links and interfaces
-- Credentials for various protocols
-- Discovery scans and analysis results
-- Events and metrics
+### Port Already in Use
 
-## Customization
+**Error**: `Port 3000 is already in use`
 
-### Adding New Device Types
+**Solution**:
+```bash
+# Find what's using the port
+lsof -i :3000
 
-1. Update the `Device` interface in `types/index.ts`
-2. Add device icons in component files
-3. Update mock data generation
-4. Modify discovery logic if needed
+# Kill the process or change the port in docker-compose.grafana.yml
+```
 
-### Adding New Credential Types
+### Grafana Not Loading in Iframe
 
-1. Extend the `Credential` type in `types/index.ts`
-2. Update the credentials manager UI
-3. Add validation logic
-4. Update discovery integration
+**Issue**: Blank page in embed mode
 
-### Customizing UI Themes
+**Solution**:
+1. Try opening http://localhost:3000 directly in a browser
+2. If that works, the iframe restrictions might be the issue
+3. Use **Redirect Mode** in the application instead
 
-The application uses Tailwind CSS v4 with a dark mode implementation. To customize:
+### Cannot Access from Application
 
-1. Modify theme variables in `src/index.css`
-2. Update component classes
-3. Add custom CSS as needed
+**Error**: Connection refused
 
-## Contributing
+**Solution**:
+1. Verify Grafana is running: `docker ps | grep grafana`
+2. Check URL is correct: `http://localhost:3000`
+3. Ensure you're not using `https` if Grafana is on `http`
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+## 📚 Additional Resources
 
-## License
+### Grafana
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+- **Official Docs**: https://grafana.com/docs/
+- **Dashboard Marketplace**: https://grafana.com/grafana/dashboards/
+- **Tutorials**: https://grafana.com/tutorials/
 
-## Acknowledgments
+### Prometheus
 
-- Inspired by Progress WhatsUp Gold and SolarWinds NPM
-- Built with modern web technologies
-- Designed for network administrators and IT professionals
+- **Official Docs**: https://prometheus.io/docs/
+- **Query Guide**: https://prometheus.io/docs/prometheus/latest/querying/basics/
 
-## Support
+### Docker
 
-For questions or issues, please create an issue in the repository or contact the development team.
+- **Docker Compose**: https://docs.docker.com/compose/
+- **Docker Desktop**: https://docs.docker.com/desktop/
+
+## 🛟 Getting Help
+
+### Check Service Status
+```bash
+docker-compose -f docker-compose.grafana.yml ps
+```
+
+### View Service Logs
+```bash
+docker-compose -f docker-compose.grafana.yml logs --tail=100 grafana
+```
+
+### Test Service Connectivity
+```bash
+# Test Grafana
+curl http://localhost:3000/api/health
+
+# Test Prometheus
+curl http://localhost:9090/-/healthy
+```
+
+## 🔐 Security Notes
+
+The default setup is configured for **development use**. For production:
+
+1. **Change default passwords**
+2. **Enable HTTPS/SSL**
+3. **Configure proper authentication** (OAuth, LDAP, etc.)
+4. **Restrict network access**
+5. **Use environment variables for secrets**
+6. **Regular backups**
+
+See [GRAFANA_SETUP.md](GRAFANA_SETUP.md) for production configuration details.
+
+## 📝 Next Steps
+
+1. ✅ Ensure Docker Desktop is running
+2. ✅ Start Grafana and Prometheus with `./start-grafana.sh`
+3. ✅ Access Grafana at http://localhost:3000
+4. ✅ Start the main application
+5. ✅ Configure Grafana in the app
+6. 📊 Create custom dashboards
+7. 🔔 Set up alerts
+8. 📈 Monitor your network
+
+## 💡 Tips
+
+- **Create backups** before making major changes
+- **Use dashboard templates** from Grafana marketplace
+- **Set up alerts** for critical metrics
+- **Document your custom configurations**
+- **Keep Docker images updated**: `docker-compose pull`
+
+---
+
+Happy Monitoring! 🎉
+
+For detailed setup instructions, see [GRAFANA_SETUP.md](GRAFANA_SETUP.md)
+
+
